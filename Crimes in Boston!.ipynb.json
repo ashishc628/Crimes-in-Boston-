@@ -1,0 +1,486 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#check for data file\n",
+    "import os\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['.config', 'Music', '.condarc', 'Untitled5.ipynb', 'Untitled1.ipynb', 'seaborn.ipynb', '.DS_Store', 'crime.csv', '.CFUserTextEncoding', 'Untitled3.ipynb', 'sample_table.csv', 'Untitled.ipynb', 'Untitled4.ipynb', 'Untitled6.ipynb', 'Pictures', '911.csv', 'MultiIndex in pandas.ipynb', 'All in one.ipynb', 'Untitled2.ipynb', '.ipython', 'Desktop', 'Library', '.matplotlib', '.spyder-py3', 'seaborn-data', '.bash_sessions', '911.ipynb', 'Public', '.anaconda', 'Movies', 'Applications', '.Trash', '.ipynb_checkpoints', '.jupyter', 'Documents', '.bash_profile', 'anaconda3', 'Downloads', 'Hello World For machine Learning(911 Analysis).ipynb', '.bash_history', '.conda', 'offense_codes.csv']\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(os.listdir())\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import all major libraries\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# usage of inline plotting\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#load data from CSV file\n",
+    "dataFrame = pd.read_csv('crime.csv',header=0,encoding = 'unicode_escape')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 319073 entries, 0 to 319072\n",
+      "Data columns (total 17 columns):\n",
+      "INCIDENT_NUMBER        319073 non-null object\n",
+      "OFFENSE_CODE           319073 non-null int64\n",
+      "OFFENSE_CODE_GROUP     319073 non-null object\n",
+      "OFFENSE_DESCRIPTION    319073 non-null object\n",
+      "DISTRICT               317308 non-null object\n",
+      "REPORTING_AREA         319073 non-null object\n",
+      "SHOOTING               1019 non-null object\n",
+      "OCCURRED_ON_DATE       319073 non-null object\n",
+      "YEAR                   319073 non-null int64\n",
+      "MONTH                  319073 non-null int64\n",
+      "DAY_OF_WEEK            319073 non-null object\n",
+      "HOUR                   319073 non-null int64\n",
+      "UCR_PART               318983 non-null object\n",
+      "STREET                 308202 non-null object\n",
+      "Lat                    299074 non-null float64\n",
+      "Long                   299074 non-null float64\n",
+      "Location               319073 non-null object\n",
+      "dtypes: float64(2), int64(4), object(11)\n",
+      "memory usage: 41.4+ MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "dataFrame.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>INCIDENT_NUMBER</th>\n",
+       "      <th>OFFENSE_CODE</th>\n",
+       "      <th>OFFENSE_CODE_GROUP</th>\n",
+       "      <th>OFFENSE_DESCRIPTION</th>\n",
+       "      <th>DISTRICT</th>\n",
+       "      <th>REPORTING_AREA</th>\n",
+       "      <th>SHOOTING</th>\n",
+       "      <th>OCCURRED_ON_DATE</th>\n",
+       "      <th>YEAR</th>\n",
+       "      <th>MONTH</th>\n",
+       "      <th>DAY_OF_WEEK</th>\n",
+       "      <th>HOUR</th>\n",
+       "      <th>UCR_PART</th>\n",
+       "      <th>STREET</th>\n",
+       "      <th>Lat</th>\n",
+       "      <th>Long</th>\n",
+       "      <th>Location</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>I182070945</td>\n",
+       "      <td>619</td>\n",
+       "      <td>Larceny</td>\n",
+       "      <td>LARCENY ALL OTHERS</td>\n",
+       "      <td>D14</td>\n",
+       "      <td>808</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>2018-09-02 13:00:00</td>\n",
+       "      <td>2018</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Sunday</td>\n",
+       "      <td>13</td>\n",
+       "      <td>Part One</td>\n",
+       "      <td>LINCOLN ST</td>\n",
+       "      <td>42.357791</td>\n",
+       "      <td>-71.139371</td>\n",
+       "      <td>(42.35779134, -71.13937053)</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>I182070943</td>\n",
+       "      <td>1402</td>\n",
+       "      <td>Vandalism</td>\n",
+       "      <td>VANDALISM</td>\n",
+       "      <td>C11</td>\n",
+       "      <td>347</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>2018-08-21 00:00:00</td>\n",
+       "      <td>2018</td>\n",
+       "      <td>8</td>\n",
+       "      <td>Tuesday</td>\n",
+       "      <td>0</td>\n",
+       "      <td>Part Two</td>\n",
+       "      <td>HECLA ST</td>\n",
+       "      <td>42.306821</td>\n",
+       "      <td>-71.060300</td>\n",
+       "      <td>(42.30682138, -71.06030035)</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>I182070941</td>\n",
+       "      <td>3410</td>\n",
+       "      <td>Towed</td>\n",
+       "      <td>TOWED MOTOR VEHICLE</td>\n",
+       "      <td>D4</td>\n",
+       "      <td>151</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>2018-09-03 19:27:00</td>\n",
+       "      <td>2018</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Monday</td>\n",
+       "      <td>19</td>\n",
+       "      <td>Part Three</td>\n",
+       "      <td>CAZENOVE ST</td>\n",
+       "      <td>42.346589</td>\n",
+       "      <td>-71.072429</td>\n",
+       "      <td>(42.34658879, -71.07242943)</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>I182070940</td>\n",
+       "      <td>3114</td>\n",
+       "      <td>Investigate Property</td>\n",
+       "      <td>INVESTIGATE PROPERTY</td>\n",
+       "      <td>D4</td>\n",
+       "      <td>272</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>2018-09-03 21:16:00</td>\n",
+       "      <td>2018</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Monday</td>\n",
+       "      <td>21</td>\n",
+       "      <td>Part Three</td>\n",
+       "      <td>NEWCOMB ST</td>\n",
+       "      <td>42.334182</td>\n",
+       "      <td>-71.078664</td>\n",
+       "      <td>(42.33418175, -71.07866441)</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>I182070938</td>\n",
+       "      <td>3114</td>\n",
+       "      <td>Investigate Property</td>\n",
+       "      <td>INVESTIGATE PROPERTY</td>\n",
+       "      <td>B3</td>\n",
+       "      <td>421</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>2018-09-03 21:05:00</td>\n",
+       "      <td>2018</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Monday</td>\n",
+       "      <td>21</td>\n",
+       "      <td>Part Three</td>\n",
+       "      <td>DELHI ST</td>\n",
+       "      <td>42.275365</td>\n",
+       "      <td>-71.090361</td>\n",
+       "      <td>(42.27536542, -71.09036101)</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  INCIDENT_NUMBER  OFFENSE_CODE    OFFENSE_CODE_GROUP   OFFENSE_DESCRIPTION  \\\n",
+       "0      I182070945           619               Larceny    LARCENY ALL OTHERS   \n",
+       "1      I182070943          1402             Vandalism             VANDALISM   \n",
+       "2      I182070941          3410                 Towed   TOWED MOTOR VEHICLE   \n",
+       "3      I182070940          3114  Investigate Property  INVESTIGATE PROPERTY   \n",
+       "4      I182070938          3114  Investigate Property  INVESTIGATE PROPERTY   \n",
+       "\n",
+       "  DISTRICT REPORTING_AREA SHOOTING     OCCURRED_ON_DATE  YEAR  MONTH  \\\n",
+       "0      D14            808      NaN  2018-09-02 13:00:00  2018      9   \n",
+       "1      C11            347      NaN  2018-08-21 00:00:00  2018      8   \n",
+       "2       D4            151      NaN  2018-09-03 19:27:00  2018      9   \n",
+       "3       D4            272      NaN  2018-09-03 21:16:00  2018      9   \n",
+       "4       B3            421      NaN  2018-09-03 21:05:00  2018      9   \n",
+       "\n",
+       "  DAY_OF_WEEK  HOUR    UCR_PART       STREET        Lat       Long  \\\n",
+       "0      Sunday    13    Part One   LINCOLN ST  42.357791 -71.139371   \n",
+       "1     Tuesday     0    Part Two     HECLA ST  42.306821 -71.060300   \n",
+       "2      Monday    19  Part Three  CAZENOVE ST  42.346589 -71.072429   \n",
+       "3      Monday    21  Part Three   NEWCOMB ST  42.334182 -71.078664   \n",
+       "4      Monday    21  Part Three     DELHI ST  42.275365 -71.090361   \n",
+       "\n",
+       "                      Location  \n",
+       "0  (42.35779134, -71.13937053)  \n",
+       "1  (42.30682138, -71.06030035)  \n",
+       "2  (42.34658879, -71.07242943)  \n",
+       "3  (42.33418175, -71.07866441)  \n",
+       "4  (42.27536542, -71.09036101)  "
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dataFrame.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Motor Vehicle Accident Response    37132\n",
+       "Larceny                            25935\n",
+       "Medical Assistance                 23540\n",
+       "Investigate Person                 18750\n",
+       "Other                              18075\n",
+       "Name: OFFENSE_CODE_GROUP, dtype: int64"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Top 5 Crimes which happens frequently\n",
+    "dataFrame['OFFENSE_CODE_GROUP'].value_counts().head()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3006    18783\n",
+       "3115    18754\n",
+       "3831    16323\n",
+       "1402    15154\n",
+       "802     14799\n",
+       "Name: OFFENSE_CODE, dtype: int64"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Top 5 offense code\n",
+    "dataFrame['OFFENSE_CODE'].value_counts().head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2017-06-01 00:00:00    29\n",
+       "2015-07-01 00:00:00    27\n",
+       "2016-08-01 00:00:00    27\n",
+       "2015-06-18 05:00:00    22\n",
+       "2017-08-01 00:00:00    22\n",
+       "Name: OCCURRED_ON_DATE, dtype: int64"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#TOP 5 dates in which crime occurs the most\n",
+    "dataFrame['OCCURRED_ON_DATE'].value_counts().head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "WASHINGTON ST        14194\n",
+       "BLUE HILL AVE         7794\n",
+       "BOYLSTON ST           7221\n",
+       "DORCHESTER AVE        5149\n",
+       "TREMONT ST            4796\n",
+       "MASSACHUSETTS AVE     4708\n",
+       "Name: STREET, dtype: int64"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Top 6 streets where crime occurs the most\n",
+    "dataFrame['STREET'].value_counts().head(6)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(0.00000000, 0.00000000)       19999\n",
+       "(42.34862382, -71.08277637)     1243\n",
+       "(42.36183857, -71.05976489)     1208\n",
+       "(42.28482577, -71.09137369)     1121\n",
+       "(42.32866284, -71.08563401)     1042\n",
+       "Name: Location, dtype: int64"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    " "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AttributeError",
+     "evalue": "'AxesSubplot' object has no attribute 'a'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-26-e511824816d7>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m#plot a countplot for SpecificReason\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0msns\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcountplot\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'OFFENSE_CODE_GROUP'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdata\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mdataFrame\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mhue\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mAttributeError\u001b[0m: 'AxesSubplot' object has no attribute 'a'"
+     ]
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "#plot a countplot for SpecificReason\n",
+    "sns.countplot(x='OFFENSE_CODE_GROUP', data=dataFrame,hue=None).a()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#use group_by \n",
+    "byMonth = dataFrame.groupby('Day').count()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
